@@ -1,0 +1,90 @@
+
+Skip to content
+This repository
+
+    Pull requests
+    Issues
+    Gist
+
+    @hprakash
+
+10
+0
+
+    0
+
+hprakash/OS-FA16 Private
+Code
+Issues 0
+Pull requests 0
+Projects 0
+Wiki
+Pulse
+Graphs
+Settings
+OS-FA16/.gitignore
+37d9bf8 on Sep 24, 2016
+@swany swany ignore the temporary .wav file
+@swany
+@bhimebau
+55 lines (47 sloc) 554 Bytes
+# Local files
+compile/Makedefs
+compile/.defs
+compile/.vers_num
+compile/version
+compile/xinu.map
+compile/xinu
+compile/xinu.bin
+compile/xinu.boot
+compile/.wav.wav
+config/lex.yy.c
+config/y.tab.c
+config/conf.h
+config/conf.c
+include/conf.h
+system/conf.c
+TAGS
+
+# binaries
+config/config
+compile/uboot-tool/mkimage
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+
+    API Training Shop Blog About 
+
+    © 2017 GitHub, Inc. Help Support 
+
+
