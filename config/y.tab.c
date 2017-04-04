@@ -257,8 +257,6 @@ typedef int YYSTYPE;
 #endif
 
 
-int yylex(void);
-
 extern YYSTYPE yylval;
 
 int yyparse (void);
