@@ -8,9 +8,11 @@ local	int newpid();
 
 /*------------------------------------------------------------------------
  *  create  -  create a process to start running a procedure
+ * 			-  It will create a non secure process to do some 
+ * 			-  untruted operation
  *------------------------------------------------------------------------
  */
-pid32	create(
+pid32	create_NS(
 	  void		*procaddr,	/* procedure address		*/
 	  uint32	ssize,		/* stack size in words		*/
 	  pri16		priority,	/* process priority > 0		*/
@@ -52,8 +54,8 @@ pid32	create(
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
-	/* By default make process secure  */
-	prptr->NS = FALSE;
+	/* By default make process non-secure  */
+	prptr->NS = TRUE;
 
 	/* set up initial device descriptors for the shell		*/
 #ifdef ARM_BBB
