@@ -28,6 +28,11 @@ void security_critical_job(void){
 	}		
 	
 }
+void call_print(void){
+	
+	printf("\nDemo that insecure process can cheat the system by spawning secure process !");
+	resume( create(security_critical_job, 1024, 20, "testProc-1", 0) );
+}
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -56,7 +61,7 @@ shellcmd xsh_testNS(int nargs, char *args[]) {
 	//resume( create(print_security_state, 1024, 20, "Proc1", 0) );
 	//resume( create_NS(print_security_state, 1024, 20, "Proc2", 0) );
 	printf("\nMain Process is calling in-secure process call_print");
-	resume( create_NS(security_critical_job, 1024, 20, "Proc-Parent", 0) );
+	resume( create_NS(call_print, 1024, 20, "Proc-Parent", 0) );
 	
 	if(proctab[currpid].NS){
 		//printf("\nMain Process is Non Secure");
