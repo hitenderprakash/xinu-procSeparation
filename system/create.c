@@ -28,6 +28,14 @@ pid32	create(
 	uint32		*saddr;		/* stack address		*/
 
 	mask = disable();
+	//check if the create call has been initiated by an insecure process
+	//return error in that case 
+	//only secure process can call create
+	//insecure process can only create insecure child process by making a call to create_NS
+	if(getNS(getpid())){
+		return SYSERR;
+	}	
+	
 	if (ssize < MINSTK)
 		ssize = MINSTK;
 	ssize = (uint32) roundew(ssize);
