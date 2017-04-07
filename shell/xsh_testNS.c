@@ -6,13 +6,27 @@
 
 void print_security_state(void){
 	struct	procent	*prptr;	
-	prptr=&proctab[getpid()];
-	if(prptr->NS){
-		printf("\nNon Secure Process: %s",prptr->prname);
+	pid32 pid=getpid();
+	prptr=&proctab[pid];
+	if(getNS(pid)){
+		printf("\n%s [pid: %d] is: Non Secure Process\n",prptr->prname,pid);
 	}
 	else{
-		printf("\nSecure Process: %s",prptr->prname);
+		printf("%s [pid: %d] is: Secure Process\n",prptr->prname,pid);
 	}
+}
+
+void security_critical_job(void){
+	printf("\nA call to security_critical_job function is about to process");
+	printf("\nDemo that security state can be detected inside critical job");
+	if(!getNS(getpid())){
+		printf("\nSecure Access ! Everything is fine!\n");
+		
+	}
+	else{
+		printf("\nIn-secure access detected ! Security - breach !!\n");
+	}		
+	
 }
 
 
@@ -39,7 +53,16 @@ shellcmd xsh_testNS(int nargs, char *args[]) {
 			args[0]);
 		return 1;
 	}
-	resume( create(print_security_state, 1024, 20, "SecureProc", 0) );
-	resume( create_NS(print_security_state, 1024, 20, "NonSecureProc", 0) );
+	//resume( create(print_security_state, 1024, 20, "Proc1", 0) );
+	//resume( create_NS(print_security_state, 1024, 20, "Proc2", 0) );
+	printf("\nMain Process is calling in-secure process call_print");
+	resume( create_NS(security_critical_job, 1024, 20, "Proc-Parent", 0) );
+	
+	if(proctab[currpid].NS){
+		//printf("\nMain Process is Non Secure");
+	}
+	else{
+		//printf("\nMain Process is Secure");
+	}
 	return 0;
 }
