@@ -8,7 +8,7 @@ void print_security_state(void){
 	struct	procent	*prptr;	
 	pid32 pid=getpid();
 	prptr=&proctab[pid];
-	if(getNS(pid)){
+	if(getProcSecState(pid)){
 		printf("\n%s [pid: %d] is: Non Secure Process\n",prptr->prname,pid);
 	}
 	else{
@@ -17,20 +17,30 @@ void print_security_state(void){
 }
 
 void security_critical_job(void){
-	printf("\nA call to security_critical_job function is about to process");
-	printf("\nDemo that security state can be detected inside critical job");
-	if(!getNS(getpid())){
-		printf("\nSecure Access ! Everything is fine!\n");
+	kprintf("\nProcessing: security_critical_job function");
+	//printf("\nExpected if process was secure");
+	if(!getProcSecState(getpid())){
+		//printf("\nSecure Access!\n");
 		
 	}
 	else{
-		printf("\nIn-secure access detected ! Security - breach !!\n");
+		//printf("\nIn-secure access detected ! Security - breach !!\n");
 	}		
 	
 }
 void call_print(void){
 	
-	printf("\nDemo that insecure process can cheat the system by spawning secure process !");
+	//printf("\nSecurity testing");
+	if(getProcSecState(getpid())){
+		kprintf("\nYou should NOT see output from security critical job funtion below this:>_");
+	}
+	else{
+		kprintf("\nYou should see output from security critical job funtion below this:>_");
+		
+	}
+	//struct procent *prptr;
+	//prptr=&proctab[getpid()];
+	//prptr->procSecInfo->proc_NS_state=FALSE;// not allowed here
 	resume( create(security_critical_job, 1024, 20, "testProc-1", 0) );
 }
 
@@ -60,14 +70,24 @@ shellcmd xsh_testNS(int nargs, char *args[]) {
 	}
 	//resume( create(print_security_state, 1024, 20, "Proc1", 0) );
 	//resume( create_NS(print_security_state, 1024, 20, "Proc2", 0) );
-	printf("\nMain Process is calling in-secure process call_print");
-	resume( create_NS(call_print, 1024, 20, "Proc-Parent", 0) );
+	//kprintf("\nInitiating secure process call_print");
+	//resume( create(call_print, 1024, 20, "secure", 0) );
+
+	printf("\nInitiating Non-secure process call_print");
+	resume( create_NS(call_print, 1024, 20, "non-secure", 0) );
 	
-	if(proctab[currpid].NS){
+	if(getProcSecState(getpid())){
 		//printf("\nMain Process is Non Secure");
 	}
 	else{
 		//printf("\nMain Process is Secure");
 	}
+	//asm("MRC p15, 0, r1, c1, c1, 0");
+	//register int sp asm("r13");
+
+	//printf("Data: %d",sp);
+	//MRC p15, 0, r1, c1, c1, 0
+
+	//MCR p15, 0, r1, c1, c1, 0
 	return 0;
 }
